@@ -10,7 +10,7 @@ function Search() {
           type="search"
           name="search"
           id="search"
-          className="border-2 px-2 rounded-sm mx-2"
+          className="border-2 sm:px-2 rounded-sm sm:mx-2"
           placeholder="Search..."
         />
       </div>
