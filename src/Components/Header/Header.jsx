@@ -1,9 +1,11 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import calender from "../../assets/Images/calendar.png";
 import { useEffect, useState } from "react";
 
 function Header() {
   const location = useLocation();
+  const navigate = useNavigate()
+
   const [auth, setAuth] = useState(false);
   const [home, setHome] = useState(false);
 
@@ -16,7 +18,16 @@ function Header() {
       setHome(true);
     }
   }, []);
-  console.log(auth);
+
+  const handleLogout =async ()=>{
+    try {
+     localStorage.removeItem("Jwt")
+      navigate('/auth/login')
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <>
       <div className="h-10 bg-blue-600 flex items-center justify-between px-3">
@@ -44,7 +55,7 @@ function Header() {
               Signup
             </button>
           </Link>
-        </div>) : (<button className="bg-red-600 px-2 py-1 text-white rounded-sm text-sm">Logout</button>)}
+        </div>) : (<button onClick={handleLogout} className="bg-red-600 px-2 py-1 text-white rounded-sm text-sm">Logout</button>)}
       </div>
     </>
   );
