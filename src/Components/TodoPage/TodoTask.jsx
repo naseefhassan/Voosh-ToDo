@@ -1,6 +1,7 @@
 import { useContext, useEffect } from "react";
 import { TaskContext } from "../../Context/StoreTask";
 import axiosInstance from "../../Api/axios";
+import { Link } from "react-router-dom";
 
 function TodoTask() {
   const { task, setTask } = useContext(TaskContext);
@@ -49,9 +50,9 @@ function TodoTask() {
                     <button onClick={() => handleDelete(item._id)} className="bg-red-600 p-1 px-2 rounded-md">
                       Delete
                     </button>
-                    {/* <Link to={`/edit/${item._id}`}> */}
+                    <Link to={`/edit/${item._id}`}>
                       <button className="bg-blue-400 p-1 px-2 rounded-md">Edit</button>
-                    {/* </Link> */}
+                    </Link>
                     <button className="bg-blue-700 p-1 px-2 rounded-md">View Details</button>
                   </div>
                 </div>
