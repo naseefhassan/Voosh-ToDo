@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axiosInstance from "../../Api/axios";
+import { TaskContext } from "../../Context/StoreTask";
 
 function AddTask() {
   const [addTask, setAddTask] = useState(false);
-  const [task, setTask] = useState("");
+  const [taskInput, setTaskInput] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
+  const { task, setTask } = useContext(TaskContext);
+
 
   const toggleAddTask = () => {
     setAddTask((prev) => !prev);
@@ -13,13 +16,15 @@ function AddTask() {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    if (task !== "" && description !== "") {
+    if (taskInput !== "" && description !== "") {
       try {
         const createdAt = new Date().toISOString();
-        await axiosInstance.post("/user/task", { task, description,createdAt });
-        setTask("");
+        const newTask = { task: taskInput, description, createdAt };
+        await axiosInstance.post("/user/task", newTask);
+        setTask((prevTasks) => [...prevTasks, newTask]); 
         setDescription("");
         setAddTask(false);
+        setTaskInput('')
       } catch (error) {
         console.error(error);
       }
@@ -27,7 +32,6 @@ function AddTask() {
       setError("Please Fill the inputs");
     }
   };
-
   return (
     <>
       <div className="m-5">
@@ -44,13 +48,13 @@ function AddTask() {
                 type="text"
                 placeholder="Enter the task"
                 className="px-2 rounded-sm border-2 w-full my-2"
-                value={task}
+                value={taskInput}
                 onChange={(e) => {
-                  setTask(e.target.value);
+                  setTaskInput(e.target.value);
                   setError("");
                 }}
               />
-              <input
+               <input
                 type="text"
                 name="description"
                 id="description"

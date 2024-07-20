@@ -1,8 +1,8 @@
 import { createContext, useState } from "react";
 
-const TaskContext = createContext();
+export const TaskContext = createContext();
 
-const StoreTask = ({ children }) => {
+export const StoreTask = ({ children }) => {
   const [task, setTask] = useState([]);
 
   return (
@@ -11,5 +11,3 @@ const StoreTask = ({ children }) => {
     </TaskContext.Provider>
   );
 };
-
-export { TaskContext, StoreTask };
