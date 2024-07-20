@@ -2,11 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import axiosInstance from "../../Api/axios";
 import { TaskContext } from "../../Context/StoreTask";
 import { DragDropContext } from "../../Context/DragDropContext";
+import { SearchContext } from "../../Context/SearchContext"; // Import SearchContext
 import { Link } from "react-router-dom";
 
 function TodoTask() {
   const { tasks, setTasks } = useContext(TaskContext);
   const { draggedItem, setDraggedItem } = useContext(DragDropContext);
+  const { searchTerm } = useContext(SearchContext); // Access searchTerm from context
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
 
   useEffect(() => {
@@ -23,6 +25,10 @@ function TodoTask() {
     };
     fetchData();
   }, [setTasks, setDraggedItem, draggedItem]);
+
+  const filteredTasks = tasks.todo.filter((task) =>
+    task.task.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleDelete = async (taskId) => {
     try {
@@ -42,19 +48,20 @@ function TodoTask() {
     setDraggedItem(tasks.todo[index]);
   };
 
- 
-
   const handleDrop = async (e) => {
     e.preventDefault();
     if (draggedItem) {
       const updatedTasks = tasks.todo.filter((t) => t._id !== draggedItem._id);
       setTasks((prev) => ({
         ...prev,
-        todo: [...updatedTasks, { ...draggedItem, state: "task" }],
+        todo: [{ ...draggedItem, state: "task" }, ...updatedTasks],
       }));
 
       try {
-        await axiosInstance.post("/user/updateTaskState", { ...draggedItem, state: "task" });
+        await axiosInstance.post("/user/updateTaskState", {
+          ...draggedItem,
+          state: "task",
+        });
         setDraggedItem(null);
       } catch (error) {
         console.error("Failed to update task state:", error);
@@ -69,10 +76,12 @@ function TodoTask() {
   return (
     <div onDrop={handleDrop} onDragOver={handleDragOver}>
       <div className="text-white">
-        <h1 className="font-semibold mx-1 bg-blue-600 p-[2px] px-2 rounded-sm">TODO</h1>
+        <h1 className="font-semibold mx-1 bg-blue-600 p-[2px] px-2 rounded-sm">
+          TODO
+        </h1>
         <div className="max-h-[300px] overflow-y-scroll mt-3 no-scrollbar">
-          {tasks.todo.length > 0 ? (
-            tasks.todo.map((item, index) => (
+          {filteredTasks.length > 0 ? (
+            filteredTasks.slice().reverse().map((item, index) => (
               <div
                 key={index}
                 className={`text-black bg-blue-200 rounded-md mx-1 p-2 my-2 ${
@@ -110,7 +119,7 @@ function TodoTask() {
               </div>
             ))
           ) : (
-            <p>No tasks available.</p>
+            <p className="text-sm text-black text-center">No tasks available.</p>
           )}
         </div>
       </div>
