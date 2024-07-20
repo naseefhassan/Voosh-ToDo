@@ -132,7 +132,7 @@ function Signup() {
                     className=" text-red-500 text-[12px] p-1 "
                   />
                   <Field
-                    type="text"
+                    type="password"
                     name="password"
                     id="password"
                     values={values.password}
@@ -152,7 +152,7 @@ function Signup() {
                     className=" text-red-500 text-[12px] p-1 "
                   />
                   <Field
-                    type="text"
+                    type="password"
                     name="confirmPassword"
                     id="confirmPassword"
                     values={values.confirmPassword}

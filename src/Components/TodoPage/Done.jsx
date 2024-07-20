@@ -2,13 +2,13 @@ import React, { useState, useEffect, useContext } from "react";
 import axiosInstance from "../../Api/axios";
 import { TaskContext } from "../../Context/StoreTask";
 import { DragDropContext } from "../../Context/DragDropContext";
-import { SearchContext } from "../../Context/SearchContext"; // Import SearchContext
+import { SearchContext } from "../../Context/SearchContext";
 import { Link } from "react-router-dom";
 
 function Done() {
   const { tasks, setTasks } = useContext(TaskContext);
   const { draggedItem, setDraggedItem } = useContext(DragDropContext);
-  const { searchTerm } = useContext(SearchContext); // Access searchTerm from context
+  const { searchTerm } = useContext(SearchContext); 
   const [draggedItemIndex, setDraggedItemIndex] = useState(null);
 
   useEffect(() => {
@@ -81,7 +81,7 @@ function Done() {
         </h1>
         <div className="max-h-[300px] overflow-y-scroll mt-3 no-scrollbar">
           {filteredTasks.length > 0 ? (
-            filteredTasks.slice().reverse().map((item, index) => (
+            filteredTasks.slice().map((item, index) => (
               <div
                 key={index}
                 className={`text-black bg-blue-200 rounded-md mx-1 p-2 my-2 ${

@@ -6,7 +6,7 @@ const Instance =axios.create({
 
 Instance.interceptors.request.use(
     (confiq) => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("Jwt");
       if (token) {
         confiq.headers.Authorization = `Bearer ${token}`;
       }

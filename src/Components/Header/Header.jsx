@@ -37,7 +37,7 @@ function Header() {
             <h1
               className={`text-white ${
                 auth
-                  ? "bg-white px-2 py-[2px] text-black rounded-md text-sm"
+                  ? "bg-white px-2 py-[2px] text-blue-700 rounded-md text-sm"
                   : " "
               }`}
             >
@@ -48,7 +48,7 @@ function Header() {
             <button
               className={`text-white ${
                 !auth
-                  ? "bg-white px-2 py-[2px] text-black rounded-md text-sm "
+                  ? "bg-white px-2 py-[2px] text-blue-700 rounded-md text-sm "
                   : ""
               }`}
             >

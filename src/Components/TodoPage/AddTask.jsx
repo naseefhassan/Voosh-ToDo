@@ -21,7 +21,6 @@ function AddTask() {
         const newTask = { task: taskInput, description, createdAt, order: 0, state: 'task' };
         await axiosInstance.post("/user/task", newTask);
 
-        // Add the new task to the 'todo' list
         setTasks((prevTasks) => ({
           ...prevTasks,
           todo: [...prevTasks.todo, newTask]
