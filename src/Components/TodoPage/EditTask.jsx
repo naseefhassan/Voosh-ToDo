@@ -12,9 +12,16 @@ function EditTask() {
     const fetchData = async () => {
       try {
         const response = await axiosInstance.get(`/user/value/${editId}`);
-        setTask(response.data.editValue);
+
+        if (response.data && response.data.task) {
+          setTask(response.data.task);
+        } else {
+          console.error("Unexpected API response structure");
+          setError("Unexpected API response structure");
+        }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching task data:", error);
+        setError("Error fetching task data");
       }
     };
     fetchData();
@@ -28,16 +35,16 @@ function EditTask() {
 
   const handleEdit = async (e) => {
     e.preventDefault();
-    if (task.task !== "" && task.description !== "") {
+    if (task.task.trim() !== "" && task.description.trim() !== "") {
       try {
-        const response = await axiosInstance.put(
+        await axiosInstance.put(
           `/user/editTask/${editId}`,
           task
         );
-        console.log(response.data.editedTask);
         navigate("/");
       } catch (error) {
-        console.error(error);
+        console.error("Error updating task:", error);
+        setError("Error updating task");
       }
     } else {
       setError("Please fill in all fields");
@@ -46,8 +53,11 @@ function EditTask() {
 
   return (
     <div className="bg-gray-600 h-screen flex justify-center items-center">
-      <div className="bg-white h-[80%] w-[30%] rounded-sm p-3  ">
-        <form className="h-full flex flex-col justify-between" onSubmit={handleEdit}>
+      <div className="bg-white h-[80%] w-[30%] rounded-sm p-3">
+        <form
+          className="h-full flex flex-col justify-between"
+          onSubmit={handleEdit}
+        >
           <div>
             <h1 className="font-bold">Edit Task</h1>
             <div>
@@ -56,7 +66,7 @@ function EditTask() {
                 className="border-b-2 w-full"
                 type="text"
                 name="task"
-                value={task.task}
+                value={task.task || ""}
                 onChange={handleChange}
               />
             </div>
@@ -66,20 +76,22 @@ function EditTask() {
                 className="border-b-2 w-full"
                 type="text"
                 name="description"
-                value={task.description}
+                value={task.description || ""}
                 onChange={handleChange}
               />
             </div>
           </div>
           {error && <p className="text-red-600 text-sm">{error}</p>}
-        <div className="flex justify-end gap-3 text-sm mt-5">
-          <button type="submit" className="bg-gray-200 p-1 px-2 rounded-sm">
-            Save
-          </button>
-          <Link to={"/"}>
-            <button className="bg-gray-400 p-1 px-2 rounded-sm">Cancel</button>
-          </Link>
-        </div>
+          <div className="flex justify-end gap-3 text-sm mt-5">
+            <button type="submit" className="bg-gray-200 p-1 px-2 rounded-sm">
+              Save
+            </button>
+            <Link to={"/"}>
+              <button className="bg-gray-400 p-1 px-2 rounded-sm">
+                Cancel
+              </button>
+            </Link>
+          </div>
         </form>
       </div>
     </div>
