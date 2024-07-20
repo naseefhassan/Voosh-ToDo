@@ -53,7 +53,9 @@ function TodoTask() {
                     <Link to={`/edit/${item._id}`}>
                       <button className="bg-blue-400 p-1 px-2 rounded-md">Edit</button>
                     </Link>
+                    <Link to={`/viewDetails/${item._id}`}>
                     <button className="bg-blue-700 p-1 px-2 rounded-md">View Details</button>
+                    </Link>
                   </div>
                 </div>
               ))

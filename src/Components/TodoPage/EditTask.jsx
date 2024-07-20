@@ -11,7 +11,7 @@ function EditTask() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get(`/user/editvalue/${editId}`);
+        const response = await axiosInstance.get(`/user/value/${editId}`);
         setTask(response.data.editValue);
       } catch (error) {
         console.error(error);
