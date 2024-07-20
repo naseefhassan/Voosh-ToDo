@@ -7,7 +7,7 @@ function AddTask() {
   const [taskInput, setTaskInput] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
-  const { task, setTask } = useContext(TaskContext);
+  const { tasks, setTasks } = useContext(TaskContext);
 
   const toggleAddTask = () => {
     setAddTask((prev) => !prev);
@@ -18,9 +18,15 @@ function AddTask() {
     if (taskInput !== "" && description !== "") {
       try {
         const createdAt = new Date().toISOString();
-        const newTask = { task: taskInput, description, createdAt, order: 0 };
+        const newTask = { task: taskInput, description, createdAt, order: 0, state: 'task' };
         await axiosInstance.post("/user/task", newTask);
-        setTask((prevTasks) => [...prevTasks, newTask]);
+
+        // Add the new task to the 'todo' list
+        setTasks((prevTasks) => ({
+          ...prevTasks,
+          todo: [...prevTasks.todo, newTask]
+        }));
+
         setDescription("");
         setAddTask(false);
         setTaskInput('');
